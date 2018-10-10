@@ -35,7 +35,6 @@ class Tweet {
         
         let user = dictionary["user"] as! [String: Any]
         
-        let g = user["screen_name"]
         //print("screen name \(g.debugDescription)")
         self.user = User(dictionary: user)
         

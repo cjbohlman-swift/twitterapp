@@ -50,13 +50,11 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     func completeNetworkRequest() {
         APIManager.shared.getHomeTimeLine { (tweet, error) in
             if let error = error {
-                print("Error in getting tweets")
+                print(error.localizedDescription)
             }
             else {
                 self.tweets = tweet!
-                //print(self.tweets.count)
                 self.tweetTableView.reloadData()
-                print("Tweets: ",self.tweets)
             }
         }
         
