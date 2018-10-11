@@ -25,6 +25,9 @@ class TweetCellTableViewCell: UITableViewCell {
     
     var tweet: Tweet? {
         didSet {
+            if (tweet?.retweeted == true) {
+                self.retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: .normal)
+            }
             self.profilePicUrl = tweet?.user.profilePic
             self.screenNameLabel.text = tweet?.user.screenName
             self.usernameLabel.text = tweet?.user.name
@@ -32,7 +35,8 @@ class TweetCellTableViewCell: UITableViewCell {
             self.tweetText.text = tweet?.text
             self.profilePicImage.af_setImage(withURL: profilePicUrl!)
             self.favoriteLabel.text = String(tweet!.favoriteCount!)
-            
+            if (tweet?.favorited == true) {                favoriteButton.setImage(UIImage(named: "favor-icon-red.png"), for: .normal)
+            }
             self.retweetLabel.text = String(tweet!.retweetCount)
         }
     }
@@ -76,7 +80,19 @@ class TweetCellTableViewCell: UITableViewCell {
     }
     
     @IBAction func onTapRetweet(_ sender: Any) {
-        updateRetweetCount()
+        if (tweet?.retweeted == false) {
+            updateRetweetCount()
+            retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: .normal)
+            APIManager.shared.retweet(tweet!) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    print("Error retweeting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully retweeted the following Tweet: \n\(tweet.text)")
+                    self.retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: .normal)
+                    self.retweetLabel.text = String(tweet.retweetCount)
+                }
+            }
+        }
     }
     
 

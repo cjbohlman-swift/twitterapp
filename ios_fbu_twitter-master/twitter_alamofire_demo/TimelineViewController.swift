@@ -31,6 +31,8 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     override func viewDidLoad() {
         tweetTableView.dataSource = self
         tweetTableView.delegate = self
+        tweetTableView.rowHeight = UITableViewAutomaticDimension
+        tweetTableView.estimatedRowHeight = 120
         super.viewDidLoad()
         completeNetworkRequest()
         tweetTableView.reloadData()
