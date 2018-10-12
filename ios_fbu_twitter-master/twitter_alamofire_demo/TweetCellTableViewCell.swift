@@ -35,7 +35,9 @@ class TweetCellTableViewCell: UITableViewCell {
             self.tweetText.text = tweet?.text
             self.profilePicImage.af_setImage(withURL: profilePicUrl!)
             self.favoriteLabel.text = String(tweet!.favoriteCount!)
-            if (tweet?.favorited == true) {                favoriteButton.setImage(UIImage(named: "favor-icon-red.png"), for: .normal)
+            if (tweet?.favorited == true) {
+                print("a tweet favorited: change pic")
+                favoriteButton.setImage(UIImage(named: "favor-icon-red.png"), for: .normal)
             }
             self.retweetLabel.text = String(tweet!.retweetCount)
         }
@@ -52,28 +54,27 @@ class TweetCellTableViewCell: UITableViewCell {
         // Configure the view for the selected state
     }
     
-    func updateFavoriteCount() {
-        tweet?.favorited = true
-        //tweet!.favoriteCount! += 1
-        favoriteLabel.text = String(tweet!.favoriteCount!)
-    }
-    
-    func updateRetweetCount() {
-        tweet?.retweeted = true
-        //tweet!.retweetCount += 1
-        retweetLabel.text = String(tweet!.retweetCount)
-    }
-    
     @IBAction func onTapFavorite(_ sender: Any) {
         if (tweet?.favorited == false) {
-            updateFavoriteCount()
-            favoriteButton.setImage(UIImage(named: "favor-icon-red.png"), for: .normal)
             APIManager.shared.favorite(tweet!) { (tweet: Tweet?, error: Error?) in
                 if let  error = error {
                     print("Error favoriting tweet: \(error.localizedDescription)")
                 } else if let tweet = tweet {
                     print("Successfully favorited the following Tweet: \n\(tweet.text)")
                     self.tweet = tweet
+                    self.tweet!.favorited = true
+                    self.favoriteButton.setImage(UIImage(named: "favor-icon-red.png"), for: .normal)
+                }
+            }
+        } else {
+            APIManager.shared.unfavorite(tweet!) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    print("Error unfavoriting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully unfavorited the following Tweet: \n\(tweet.text)")
+                    self.tweet = tweet
+                    self.tweet!.favorited = false
+                    self.favoriteButton.setImage(UIImage(named: "favor-icon.png"), for: .normal)
                 }
             }
         }
@@ -81,8 +82,7 @@ class TweetCellTableViewCell: UITableViewCell {
     
     @IBAction func onTapRetweet(_ sender: Any) {
         if (tweet?.retweeted == false) {
-            updateRetweetCount()
-            retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: .normal)
+            tweet?.retweeted = true
             APIManager.shared.retweet(tweet!) { (tweet: Tweet?, error: Error?) in
                 if let  error = error {
                     print("Error retweeting tweet: \(error.localizedDescription)")
@@ -90,6 +90,19 @@ class TweetCellTableViewCell: UITableViewCell {
                     print("Successfully retweeted the following Tweet: \n\(tweet.text)")
                     self.retweetButton.setImage(UIImage(named: "retweet-icon-green.png"), for: .normal)
                     self.retweetLabel.text = String(tweet.retweetCount)
+                    self.tweet!.retweeted = true
+                }
+            }
+        } else {
+            tweet?.retweeted = false
+            APIManager.shared.unretweet(tweet!) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    print("Error unretweeting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully unretweeted the following Tweet: \n\(tweet.text)")
+                    self.retweetButton.setImage(UIImage(named: "retweet-icon.png"), for: .normal)
+                    self.retweetLabel.text = String(tweet.retweetCount - 1)
+                    self.tweet!.retweeted = false
                 }
             }
         }

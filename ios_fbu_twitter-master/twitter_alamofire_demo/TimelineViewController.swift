@@ -12,19 +12,6 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
     var tweets: [Tweet] = []
     var refreshControl:UIRefreshControl!
-    
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return tweets.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCellTableViewCell", for: indexPath) as! TweetCellTableViewCell
-        cell.tweet = tweets[indexPath.row]
-        
-        return cell
-    }
-    
 
     @IBOutlet weak var tweetTableView: UITableView!
     
@@ -70,6 +57,16 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
     
     @IBAction func didTapLogout(_ sender: Any) {
         APIManager.shared.logout()
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return tweets.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "TweetCellTableViewCell", for: indexPath) as! TweetCellTableViewCell
+        cell.tweet = tweets[indexPath.row]
+        return cell
     }
     
     /*
