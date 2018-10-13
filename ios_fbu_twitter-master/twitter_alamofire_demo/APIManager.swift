@@ -117,6 +117,7 @@ class APIManager: SessionManager {
         request(urlString, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
             if response.result.isSuccess,
                 let tweetDictionary = response.result.value as? [String: Any] {
+                print(tweetDictionary)
                 let tweet = Tweet(dictionary: tweetDictionary)
                 completion(tweet, nil)
             } else {

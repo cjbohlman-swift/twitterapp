@@ -38,13 +38,16 @@ Please list two areas of the assignment you'd like to **discuss further with you
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://i.imgur.com/03VZA1t.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
 This entire app was hard 
+I know there's a small mess up in the gif where a tweet that hasn't been retweeted shows up with a retweeted icon. I couldn't fix the small glitches, and the twitter api is a jungle. Ag.
+Also, don't fav/retweet tweets that are already retweets themselves, denoted with a beginning of RT.
+Unretweeteing and unfavoriting works fine with just regular tweets.
 
 ## Credits
 
