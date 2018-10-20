@@ -34,6 +34,7 @@ class User {
         }
         if let banner:String = dictionary["profile_banner_url"] as? String {
             bannerPic = URL(string: banner)
+            print(bannerPic)
         }
         if let screen:String = dictionary["screen_name"] as? String {
             screenName = screen

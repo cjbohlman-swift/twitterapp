@@ -8,7 +8,11 @@
 
 import UIKit
 
-class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class TimelineViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, ComposeViewControllerDelegate {
+    
+    func did(post: Tweet) {
+        completeNetworkRequest()
+    }
     
     var tweets: [Tweet] = []
     var refreshControl:UIRefreshControl!
@@ -70,14 +74,21 @@ class TimelineViewController: UIViewController, UITableViewDataSource, UITableVi
         return cell
     }
     
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+        if (segue.identifier == "DetailSegue") {
+            let cell = sender as! TweetCell
+            let detailViewController = segue.destination as! DetailViewController
+            if let indexPath = tweetTableView.indexPath(for: cell) {
+                let tweet = tweets[indexPath.row]
+                detailViewController.tweet = tweet
+            }
+        } else if (segue.identifier == "ComposeSegue") {
+            let composeVC = segue.destination as! ComposeViewController
+            composeVC.delegate = self
+            composeVC.user = User.current
+        }
+        
     }
-    */
+    
 
 }
