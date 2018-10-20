@@ -44,7 +44,53 @@ class DetailViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
+    
+    @IBAction func onTapFavorite(_ sender: Any) {
+        if (tweet?.favorited == false) {
+            APIManager.shared.favorite(tweet!) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    print("Error favoriting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully favorited the following Tweet: \n\(tweet.text)")
+                    //self.homeTimeline?.completeNetworkRequest()
+                }
+            }
+        } else {
+            APIManager.shared.unfavorite(tweet!) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    print("Error unfavoriting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully unfavorited the following Tweet: \n\(tweet.text)")
+                    //self.homeTimeline?.completeNetworkRequest()
+                }
+            }
+        }
+    }
+    
 
+    @IBAction func onTapRetweet(_ sender: Any) {
+        if (tweet?.retweeted == false) {
+            // tweet?.retweeted = true
+            APIManager.shared.retweet(tweet!) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    print("Error retweeting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully retweeted the following Tweet: \n\(tweet.text)")
+                    //self.homeTimeline?.completeNetworkRequest()
+                }
+            }
+        } else {
+            tweet?.retweeted = false
+            APIManager.shared.unretweet(tweet!) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    print("Error unretweeting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
+                    print("Successfully unretweeted the following Tweet: \n\(tweet.text)")
+                    //self.homeTimeline?.completeNetworkRequest()
+                }
+            }
+        }
+    }
     /*
     // MARK: - Navigation
 
